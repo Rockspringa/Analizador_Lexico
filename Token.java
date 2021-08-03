@@ -24,19 +24,29 @@ public enum Token {
 
     public static Token getToken(String[] s) {
         Token token = null;
+
         for (String c : s) {
             Token tmp = null;
+            
             if (ENTERO.contains(c.toString())) tmp = ENTERO;
             else if (SIMBOLO.contains(c.toString())) tmp = SIMBOLO;
             else if (DECIMAL.contains(c.toString())) tmp = DECIMAL;
             else tmp = IDENTIFICADOR;
 
             if (token != tmp) {
-                if (token == null || (token == ENTERO && tmp == DECIMAL)) token = tmp;
+                if (token == null) token = tmp;
+                
+                else if (token == IDENTIFICADOR) continue;
+
+                else if ((token == ENTERO && tmp == DECIMAL)
+                            || (token == DECIMAL && tmp == ENTERO))
+                                    token = DECIMAL;
+                
                 else return ERROR;
             }
         }
-        return ERROR;
+        
+        return (token != null) ? token : ERROR;
     }
 
     @Override

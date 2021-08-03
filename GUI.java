@@ -8,7 +8,8 @@ public class GUI extends JFrame implements ActionListener {
 
     private JPanel txtPanel;
     private JTextArea txtArea;
-    private JList<String> list;
+    private JList<Object> list;
+    private DefaultListModel<Object> listModel;
 
     private JPanel btnPane;
     private JButton btn;
@@ -36,7 +37,10 @@ public class GUI extends JFrame implements ActionListener {
             );
         this.txtPanel.add(txtArea);
 
+        this.listModel = new DefaultListModel<Object>();
+
         this.list = new JList<>();
+        this.list.setModel(listModel);
         this.list.setBorder(
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createTitledBorder(
@@ -62,7 +66,15 @@ public class GUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
+        this.listModel.clear();
+
+        if (txtArea.getText().equals("") || txtArea.getText().equals("\n"))
+            this.listModel.addElement("Error: No se ingreso ningun token.");
+        else {
+            for (Object s : Analizador.analizar(txtArea.getText()))
+                this.listModel.addElement(s);
+        }
         
+        this.txtArea.setText("");
     }
 }
