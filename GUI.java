@@ -6,6 +6,18 @@ import javax.swing.border.TitledBorder;
 
 public class GUI extends JFrame implements ActionListener {
 
+    static {
+        UIManager.put("TextArea.background", Color.LIGHT_GRAY);
+        UIManager.put("Panel.background", Color.LIGHT_GRAY);
+        UIManager.put("List.background", Color.LIGHT_GRAY);
+
+        UIManager.put("Button.background", Color.DARK_GRAY);
+        UIManager.put("Button.foreground", Color.WHITE);
+        UIManager.put("Button.select", Color.BLACK);
+        UIManager.put("Button.focus", Color.WHITE);
+        UIManager.put("Button.border", BorderFactory.createEmptyBorder(10, 15, 10, 15));
+    }
+
     private JPanel txtPanel;
     private JTextArea txtArea;
     private JList<Object> list;
@@ -19,19 +31,18 @@ public class GUI extends JFrame implements ActionListener {
         this.setLayout(new BorderLayout());
         ((JPanel) this.getContentPane()).setBorder(BorderFactory.createEmptyBorder(8, 8, 0, 8));
 
-        this.setResizable(false);
-        this.setBounds(0, 0, 550, 500);
+        this.setBounds(0, 0, 550, 450);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.txtPanel = new JPanel(new GridLayout(1, 2, 10, 0));
+        this.txtPanel = new JPanel(new GridLayout(1, 2, 8, 0));
         this.getContentPane().add(txtPanel, BorderLayout.CENTER);
 
         this.txtArea = new JTextArea();
         this.txtArea.setBorder(
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createTitledBorder(
-                            BorderFactory.createLineBorder(Color.GRAY, 2, true),
-                            "Entrada de Texto", TitledBorder.LEFT, TitledBorder.TOP),
+                            BorderFactory.createLineBorder(Color.BLACK, 2, true),
+                            " Entrada de Texto ", TitledBorder.LEFT, TitledBorder.TOP),
                         BorderFactory.createEmptyBorder(5, 5, 5, 5)
                     )
             );
@@ -44,8 +55,8 @@ public class GUI extends JFrame implements ActionListener {
         this.list.setBorder(
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createTitledBorder(
-                            BorderFactory.createLineBorder(Color.GRAY, 2, true),
-                            "Lista de tokens", TitledBorder.RIGHT, TitledBorder.TOP),
+                            BorderFactory.createLineBorder(Color.BLACK, 2, true),
+                            " Lista de tokens ", TitledBorder.RIGHT, TitledBorder.TOP),
                         BorderFactory.createEmptyBorder(5, 5, 5, 5)
                     )
             );

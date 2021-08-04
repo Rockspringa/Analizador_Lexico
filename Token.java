@@ -1,8 +1,10 @@
+import java.util.ArrayList;
+
 public enum Token {
     ENTERO("1234567890", "Entero"),
     DECIMAL(".", "Decimal"),
     IDENTIFICADOR("Identificador"),
-    SIMBOLO("[]{};,", "Simbolo"),
+    CARACTER("[]{};,().:", "Caracter"),
     ERROR("Error");
 
     private final String chars;
@@ -22,31 +24,51 @@ public enum Token {
         return chars.contains(s);
     }
 
-    public static Token getToken(String[] s) {
+    public static void putToken(String[] arr, String s, ArrayList<Object> out) {
         Token token = null;
+        String obj = "";
 
-        for (String c : s) {
+        for (String c : arr) {
             Token tmp = null;
             
             if (ENTERO.contains(c.toString())) tmp = ENTERO;
-            else if (SIMBOLO.contains(c.toString())) tmp = SIMBOLO;
             else if (DECIMAL.contains(c.toString())) tmp = DECIMAL;
+            else if (CARACTER.contains(c.toString())) tmp = CARACTER;
             else tmp = IDENTIFICADOR;
 
-            if (token != tmp) {
+            if (token == DECIMAL && tmp == DECIMAL) {
+                out.add(ERROR + ": Hay un error cerca de " + s);
+                obj = "";
+                break;
+            } else if (token != tmp) {
                 if (token == null) token = tmp;
                 
-                else if (token == IDENTIFICADOR) continue;
+                else if (token == IDENTIFICADOR) {
+                    if (tmp == CARACTER || tmp == DECIMAL) {
+                        out.add(IDENTIFICADOR + ":     " + obj);
+                        obj = "";
+                        token = CARACTER;
+                    }
+                }
+
+                else if (token == CARACTER && tmp == IDENTIFICADOR) {
+                    out.add(CARACTER + ":     " + obj);
+                    obj = "";
+                    token = tmp;
+                }
 
                 else if ((token == ENTERO && tmp == DECIMAL)
                             || (token == DECIMAL && tmp == ENTERO))
                                     token = DECIMAL;
                 
-                else return ERROR;
+                else {
+                    out.add(ERROR + ": Hay un error cerca de " + s);
+                    obj = "";
+                    break;
+                }
             }
-        }
-        
-        return (token != null) ? token : ERROR;
+            obj += c;
+        } if (!obj.equals("")) out.add(token + ":     " + obj);
     }
 
     @Override

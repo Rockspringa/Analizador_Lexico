@@ -7,23 +7,23 @@ public class Analizador {
 
         for (char c : s.toCharArray()) {
             if (c == ' ' || c == '\n') {
-                out.add(getOutput(token.toString()));
+                addOutput(token.toString(), out);
                 token = new StringBuilder();
             } else token.append(c);
         }
 
-        if (!token.isEmpty()) out.add(getOutput(token.toString()));
+        if (!token.isEmpty()) addOutput(token.toString(), out);
 
         return out.toArray();
     }
 
-    private static String getOutput(String s) {
+    private static void addOutput(String s, ArrayList<Object> out) {
         int l = s.length();
         String[] sa = new String[l];
         char[] chars = s.toCharArray();
 
         for (int i = 0; i < l; i++) sa[i] = String.valueOf(chars[i]);
 
-        return Token.getToken(sa) + ":    " + s;
+        Token.putToken(sa, s, out);
     }
 }
