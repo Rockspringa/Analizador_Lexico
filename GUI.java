@@ -3,10 +3,20 @@ import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 public class GUI extends JFrame implements ActionListener {
 
     static {
+        UIManager.put("ScrollBar.thumbDarkShadow", Color.LIGHT_GRAY);
+        UIManager.put("ScrollBar.thumbHighlight", Color.DARK_GRAY);
+        UIManager.put("ScrollBar.thumbShadow", Color.DARK_GRAY);
+        UIManager.put("ScrollBar.background", Color.GRAY);
+        UIManager.put("ScrollBar.thumb", Color.DARK_GRAY);
+        UIManager.put("ScrollBar.track", Color.GRAY);
+        UIManager.put("ScrollBar.width", 10);
+
+        UIManager.put("ScrollPane.background", Color.LIGHT_GRAY);
         UIManager.put("TextArea.background", Color.LIGHT_GRAY);
         UIManager.put("Panel.background", Color.LIGHT_GRAY);
         UIManager.put("List.background", Color.LIGHT_GRAY);
@@ -19,7 +29,10 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private JPanel txtPanel;
+    private JScrollPane scrollTxt;
     private JTextArea txtArea;
+
+    private JScrollPane scrollList;
     private JList<Object> list;
     private DefaultListModel<Object> listModel;
 
@@ -38,29 +51,33 @@ public class GUI extends JFrame implements ActionListener {
         this.getContentPane().add(txtPanel, BorderLayout.CENTER);
 
         this.txtArea = new JTextArea();
-        this.txtArea.setBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createTitledBorder(
-                            BorderFactory.createLineBorder(Color.BLACK, 2, true),
-                            " Entrada de Texto ", TitledBorder.LEFT, TitledBorder.TOP),
-                        BorderFactory.createEmptyBorder(5, 5, 5, 5)
-                    )
-            );
-        this.txtPanel.add(txtArea);
+        this.txtArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            
+        this.scrollTxt = new JScrollPane(txtArea);
+        this.scrollTxt.getVerticalScrollBar().setUI(new BasicScrollBarUI());
+        this.scrollTxt.getHorizontalScrollBar().setUI(new BasicScrollBarUI());
+        this.scrollTxt.setBorder(
+                    BorderFactory.createTitledBorder(
+                        BorderFactory.createLineBorder(Color.BLACK, 2, true),
+                        " Entrada de Texto ", TitledBorder.LEFT, TitledBorder.TOP)
+                );
+        this.txtPanel.add(scrollTxt);
 
         this.listModel = new DefaultListModel<Object>();
 
         this.list = new JList<>();
         this.list.setModel(listModel);
-        this.list.setBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createTitledBorder(
-                            BorderFactory.createLineBorder(Color.BLACK, 2, true),
-                            " Lista de tokens ", TitledBorder.RIGHT, TitledBorder.TOP),
-                        BorderFactory.createEmptyBorder(5, 5, 5, 5)
-                    )
-            );
-        this.txtPanel.add(list);
+        this.list.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+        this.scrollList = new JScrollPane(this.list);
+        this.scrollList.getVerticalScrollBar().setUI(new BasicScrollBarUI());
+        this.scrollList.getHorizontalScrollBar().setUI(new BasicScrollBarUI());
+        this.scrollList.setBorder(
+                    BorderFactory.createTitledBorder(
+                        BorderFactory.createLineBorder(Color.BLACK, 2, true),
+                        " Lista de tokens ", TitledBorder.RIGHT, TitledBorder.TOP)
+                );
+        this.txtPanel.add(scrollList);
 
         this.btnPane = new JPanel();
         this.getContentPane().add(btnPane, BorderLayout.PAGE_END);
