@@ -36,11 +36,25 @@ public enum Token {
             else if (CARACTER.contains(c.toString())) tmp = CARACTER;
             else tmp = IDENTIFICADOR;
 
-            if (token == DECIMAL && tmp == DECIMAL) {
-                out.add(ERROR + ": Hay un error cerca de " + s);
-                obj = "";
-                break;
-            } else if (token != tmp) {
+            if (c.equals(" ") || c.equals("\n")) {
+                if (!obj.equals("")) {
+                    out.add(token + ":     " + obj);
+                    token = null;
+                    obj = "";
+                    continue;
+                } if (token == ERROR) {
+                    out.add(token + ": Hay un error cerca de " + s);
+                    token = null;
+                    obj = "";
+                    continue;
+                }
+            }
+            
+            else if (token == DECIMAL && tmp == DECIMAL) {
+                token = ERROR;
+            }
+            
+            else if (token != tmp && token != ERROR) {
                 if (token == null) token = tmp;
                 
                 else if (token == IDENTIFICADOR) {
@@ -68,7 +82,9 @@ public enum Token {
                 }
             }
             obj += c;
-        } if (!obj.equals("")) out.add(token + ":     " + obj);
+        }
+        if (token == ERROR) out.add(token + ": Hay un error cerca de " + obj);
+        if (!obj.equals("")) out.add(token + ":     " + obj);
     }
 
     @Override

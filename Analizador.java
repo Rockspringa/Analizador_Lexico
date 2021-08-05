@@ -3,16 +3,8 @@ import java.util.ArrayList;
 public class Analizador {
     public static Object[] analizar(String s) {
         ArrayList<Object> out = new ArrayList<>();
-        StringBuilder token = new StringBuilder();
 
-        for (char c : s.toCharArray()) {
-            if (c == ' ' || c == '\n') {
-                addOutput(token.toString(), out);
-                token = new StringBuilder();
-            } else token.append(c);
-        }
-
-        if (!token.isEmpty()) addOutput(token.toString(), out);
+        addOutput(s, out);
 
         return out.toArray();
     }
