@@ -37,8 +37,10 @@ public enum Token {
             else tmp = IDENTIFICADOR;
 
             if (c.equals(" ") || c.equals("\n")) {
+                if (token == null) continue;
                 if (!obj.equals("")) {
-                    out.add(token + ":     " + obj);
+                    out.add(token + ": " + ((token == ERROR) ? "Hay un error cerca de"
+                                                            : "   ") + " " + obj);
                     token = null;
                     obj = "";
                     continue;
@@ -84,7 +86,7 @@ public enum Token {
             obj += c;
         }
         if (token == ERROR) out.add(token + ": Hay un error cerca de " + obj);
-        if (!obj.equals("")) out.add(token + ":     " + obj);
+        else if (!obj.equals("")) out.add(token + ":     " + obj);
     }
 
     @Override
