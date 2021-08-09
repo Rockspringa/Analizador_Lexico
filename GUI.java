@@ -16,6 +16,10 @@ public class GUI extends JFrame implements ActionListener {
         UIManager.put("ScrollBar.track", Color.GRAY);
         UIManager.put("ScrollBar.width", 10);
 
+        UIManager.put("List.selectionBackground", Color.DARK_GRAY);
+        UIManager.put("List.selectionForeground", Color.LIGHT_GRAY);
+        UIManager.put("List.focusCellHighlightBorder", BorderFactory.createEmptyBorder(2, 9, 2, 9));
+
         UIManager.put("ScrollPane.background", Color.LIGHT_GRAY);
         UIManager.put("TextArea.background", Color.LIGHT_GRAY);
         UIManager.put("Panel.background", Color.LIGHT_GRAY);
